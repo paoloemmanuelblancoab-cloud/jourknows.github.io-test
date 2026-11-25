@@ -54,7 +54,7 @@ export default function AppNavbar({
 
   // The community chat is a standalone page in /public/community, not an Astro route,
   // so it is added here (every page gets it) and opened with a full page load.
-  const COMMUNITY_HREF = "/community/";
+  const COMMUNITY_HREF = `${(import.meta.env.BASE_URL || "/").replace(/\/$/, "")}/community/`;
   const allLinks = navLinks.some(l => l.href === COMMUNITY_HREF)
     ? navLinks
     : [...navLinks, { label: "COMMUNITY", href: COMMUNITY_HREF }];
