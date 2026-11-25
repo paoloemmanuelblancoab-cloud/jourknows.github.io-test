@@ -49,9 +49,17 @@ export default function AppNavbar({
     "EXPLAINER",
     "LITERARY",
     "CARTOONING",
+    "COMMUNITY",
   ];
 
-  const sortedNavLinks = [...navLinks].sort((a, b) => {
+  // The community chat is a standalone page in /public/community, not an Astro route,
+  // so it is added here (every page gets it) and opened with a full page load.
+  const COMMUNITY_HREF = "/community/";
+  const allLinks = navLinks.some(l => l.href === COMMUNITY_HREF)
+    ? navLinks
+    : [...navLinks, { label: "COMMUNITY", href: COMMUNITY_HREF }];
+
+  const sortedNavLinks = [...allLinks].sort((a, b) => {
     const aIdx = NAVBAR_ORDER.indexOf(a.label.toUpperCase());
     const bIdx = NAVBAR_ORDER.indexOf(b.label.toUpperCase());
     if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
@@ -217,6 +225,7 @@ export default function AppNavbar({
                     <a
                       key={link.label}
                       href={link.href}
+                      data-astro-reload={link.href === COMMUNITY_HREF ? "" : undefined}
                       className={`relative font-display flex items-center justify-center h-full text-[12px] lg:text-[13px] tracking-[0.5px] uppercase no-underline whitespace-nowrap transition-all duration-300 px-2.5 lg:px-3 ${
                         active
                           ? "font-extrabold text-[#000060]"
@@ -328,6 +337,7 @@ export default function AppNavbar({
                 <a
                   key={link.label}
                   href={link.href}
+                  data-astro-reload={link.href === COMMUNITY_HREF ? "" : undefined}
                   className={`block w-full text-center border-none cursor-pointer font-display text-[16px] text-white py-4 px-6 tracking-[1px] outline-none no-underline transition-all duration-300 active:bg-white/20 active:scale-[0.98] ${
                     isActive(link.href)
                       ? "font-extrabold bg-white/20"
